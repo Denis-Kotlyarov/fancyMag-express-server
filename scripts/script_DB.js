@@ -1,4 +1,5 @@
 const {sequelize} = require ("../DB");
+//синхронизация
 (async()=>{
     try{
     await sequelize.sync({
