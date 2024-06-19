@@ -5,7 +5,8 @@ const userController = new (require("../controllers/UserController"))();
 
 router.get("/", userController.getAll);
 router.get("/:id", userController.getOne);
-router.post("/", userController.createUser);
+router.post("/register", userController.createUser);
+router.post("/login", userController.loginUser);
 router.put("/:id", userController.updateUser);
 router.delete("/:id", userController.deleteUser);
 
@@ -21,7 +22,7 @@ module.exports = router;
  *          required:
  *              - first_name
  *              - last_name
- *              - email   
+ *              - email
  *              - password
  *          properties:
  *              id:
@@ -42,7 +43,7 @@ module.exports = router;
  *              password:
  *                  type: string
  *                  description: Пароль пользователя (в хеше)
-*/
+ */
 
 //!Все пользователи + БАЗОВОЕ ОПИСАНИЕ
 /**
@@ -70,7 +71,7 @@ module.exports = router;
  *                                      $ref: "#/components/schemas/User"
  *          400:
  *              description: Что-то пошло не так
-*/
+ */
 
 //!Пользователь по ID
 /**
@@ -104,7 +105,7 @@ module.exports = router;
  *                                  $ref: "#/components/schemas/User"
  *          404:
  *              description: Пользователь не найден
-*/
+ */
 
 //!Создать пользователя
 /**
@@ -141,10 +142,17 @@ module.exports = router;
  *                              status:
  *                                  type: number
  *                              data:
- *                                  $ref: '#/components/schemas/User'
+ *                                  type: object
+ *                                  properties:
+ *                                      first_name:
+ *                                          type: string
+ *                                      last_name:
+ *                                          type: string
+ *                                      email:
+ *                                          type: string
  *          400:
  *              description: Неправильный запрос
-*/
+ */
 
 //!Обновить пользователя
 /**
@@ -193,7 +201,7 @@ module.exports = router;
  *                                  type: String
  *          400:
  *              description: Неправильный запрос
-*/
+ */
 
 //!Удалить пользователя
 /**
@@ -227,4 +235,4 @@ module.exports = router;
  *                                  type: String
  *          404:
  *              description: Пользователь не найден
-*/
+ */

@@ -32,6 +32,11 @@ const User = sequelize.define(
   },
   {
     //Другая служебная информация
+    scopes: {
+      withOutPassword: {
+        attributes: ["id", "first_name", "last_name", "email"],
+      },
+    },
     tableName: "users",
     timestamps: false,
   }

@@ -40,6 +40,17 @@ class UsersController {
     }
   };
 
+  loginUser = async (req, res) => {
+    try {
+      const item = await this.userService.login(req.body);
+      const data = { status: 201, data: item };
+      return res.send(data);
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(404);
+    }
+  };
+
   updateUser = async (req, res) => {
     try {
       const id = req.params.id;

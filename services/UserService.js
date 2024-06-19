@@ -1,5 +1,25 @@
+require("dotenv").config();
+
 const { User } = require("../models/init");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
+
+const { JWT_SECRET } = process.env;
+function createTokens(payload) {
+  const access_token = jwt.sign({ data: payload }, JWT_SECRET, {
+    expiresIn: "1h",
+  });
+  const refresh_token = jwt.sign({ data: payload }, JWT_SECRET, {
+    expiresIn: "30d",
+  });
+  const data = {
+    user: payload,
+    access_token: access_token,
+    refresh_token: refresh_token,
+  };
+
+  return data;
+}
 
 class UserService {
   getAll = async () => {
@@ -30,7 +50,41 @@ class UserService {
         .createHash("sha256")
         .update(data.password)
         .digest("hex");
-      return await User.create({ ...data, password });
+      const created_user = await User.create({ ...data, password });
+      const user = await User.scope("withOutPassword").findByPk(
+        created_user.id
+      );
+      const data = createTokens(user);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  login = async (data) => {
+    try {
+      const email = data.email;
+      const user = await User.findOne({
+        where: { email },
+      });
+
+      if (!user) {
+        throw new Error("Not auth");
+      } else {
+        const password = crypto
+          .createHash("sha256")
+          .update(data.password)
+          .digest("hex");
+        if (password === user.password) {
+          const user_outPassword = await User.scope("withOutPassword").findByPk(
+            user.id
+          );
+          const data = createTokens(user_outPassword);
+          return data;
+        } else {
+          throw new Error("Wrong password");
+        }
+      }
     } catch (error) {
       throw error;
     }
