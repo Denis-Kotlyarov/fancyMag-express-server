@@ -31,8 +31,11 @@ const options = {
 // Импорт роутов
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+const ordersRouter = require ("./routes/orders");
+const productsRouter = require ("./routes/products");
 
-var app = express();
+const app = express();
+const port = 3001;
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -49,6 +52,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc(options))) //!Дока
+app.use("/index", ordersRouter);
+app.use("/index", productsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -66,8 +71,8 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-app.listen(3000, async () => {
+app.listen(port, async () => {
+  console.log(`Порт ${port}`);
   await init();
 });
-
 module.exports = app;
