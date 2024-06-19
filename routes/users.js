@@ -5,6 +5,7 @@ const userController = new (require("../controllers/UserController"))();
 
 router.get("/", userController.getAll);
 router.get("/:id", userController.getOne);
+router.post("/me", userController.getMe);
 router.post("/register", userController.createUser);
 router.post("/login", userController.loginUser);
 router.put("/:id", userController.updateUser);
@@ -107,12 +108,12 @@ module.exports = router;
  *              description: Пользователь не найден
  */
 
-//!Создать пользователя
+//!Создать/Зарегистрировать пользователя
 /**
  * @swagger
  * tags:
  *  name: Users
- * /users:
+ * /users/register:
  *  post:
  *      summary: Создать пользователя
  *      requestBody:
@@ -144,14 +145,107 @@ module.exports = router;
  *                              data:
  *                                  type: object
  *                                  properties:
- *                                      first_name:
+ *                                      user:
+ *                                          type: object
+ *                                          properties:
+ *                                              first_name:
+ *                                                  type: string
+ *                                              last_name:
+ *                                                  type: string
+ *                                              email:
+ *                                                  type: string
+ *                                      access_token:
  *                                          type: string
- *                                      last_name:
+ *                                      refresh_token:
  *                                          type: string
- *                                      email:
- *                                          type: string
+ *                                      
  *          400:
  *              description: Неправильный запрос
+ */
+
+//!Логин
+/**
+ * @swagger
+ * tags:
+ *  name: Users
+ * /users/login:
+ *  post:
+ *      summary: Залогиниться
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          email:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *      tags: [Users]
+ *      responses:
+ *          201:
+ *              description: Пользователь создан
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              status:
+ *                                  type: number
+ *                              data:
+ *                                  type: object
+ *                                  properties:
+ *                                      user:
+ *                                          type: object
+ *                                          properties:
+ *                                              first_name:
+ *                                                  type: string
+ *                                              last_name:
+ *                                                  type: string
+ *                                              email:
+ *                                                  type: string
+ *                                      access_token:
+ *                                          type: string
+ *                                      refresh_token:
+ *                                          type: string
+ *                                      
+ *          400:
+ *              description: Неправильный запрос
+ */
+
+//!Получить себя
+/**
+ * @swagger
+ * tags:
+ *  name: Users
+ * /users/me:
+ *  get:
+ *      summary: Получить себя
+ *      tags: [Users]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          id:
+ *                              type: string
+ *      responses:
+ *          200:
+ *              description: Удачное получение
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              status:
+ *                                  type: number
+ *                              data:
+ *                                  $ref: "#/components/schemas/User"
+ *          404:
+ *              description: Пользователь не найден
  */
 
 //!Обновить пользователя

@@ -4,12 +4,12 @@ const { User } = require("../models/init");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET, JWT_REFRESH } = process.env;
 function createTokens(payload) {
   const access_token = jwt.sign({ data: payload }, JWT_SECRET, {
     expiresIn: "1h",
   });
-  const refresh_token = jwt.sign({ data: payload }, JWT_SECRET, {
+  const refresh_token = jwt.sign({ data: payload }, JWT_REFRESH, {
     expiresIn: "30d",
   });
   const data = {
@@ -54,8 +54,8 @@ class UserService {
       const user = await User.scope("withOutPassword").findByPk(
         created_user.id
       );
-      const data = createTokens(user);
-      return data;
+      const payload = createTokens(user);
+      return payload;
     } catch (error) {
       throw error;
     }
@@ -84,6 +84,19 @@ class UserService {
         } else {
           throw new Error("Wrong password");
         }
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getMe = async (token) => {
+    try {
+      const item = await User.scope("withOutPassword").findByPk(token.id);
+      if (item) {
+        return item;
+      } else {
+        throw new Error("Non auth");
       }
     } catch (error) {
       throw error;

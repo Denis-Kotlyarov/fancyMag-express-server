@@ -51,6 +51,17 @@ class UsersController {
     }
   };
 
+  getMe = async (req, res) => {
+    try {
+      const item = await this.userService.getMe(req.body);
+      const data = { status: 200, data: item };
+      return res.send(data);
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(401);
+    }
+  };
+
   updateUser = async (req, res) => {
     try {
       const id = req.params.id;
