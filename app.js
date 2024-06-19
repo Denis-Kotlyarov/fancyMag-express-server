@@ -29,7 +29,6 @@ const options = {
 }
 
 // Импорт роутов
-var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const ordersRouter = require ("./routes/orders");
 const productsRouter = require ("./routes/products");
@@ -49,11 +48,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Подключение роутов + дока
-app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc(options))) //!Дока
-app.use("/index", ordersRouter);
-app.use("/index", productsRouter);
+app.use("/orders", ordersRouter);
+app.use("/products", productsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

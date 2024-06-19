@@ -5,6 +5,9 @@ const Orders = require("./orders");
 
 // связь многие ко многим - 3я таблица "products_orders" в БД создается автоматически 
 Products.belongsToMany(Orders, { through: "products_orders" });
+Products.belongsToMany(User, { through: "favorite" });
+Products.belongsToMany(User, { through: "basket" });
+User.hasMany(Orders);
 
 const init = async () => {
   //Синхронизация

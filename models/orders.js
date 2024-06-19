@@ -9,6 +9,9 @@ const Orders = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+    },
     status: {
       type: DataTypes.ENUM(
         "Ожидает оплаты",
