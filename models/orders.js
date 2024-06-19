@@ -24,6 +24,7 @@ const Orders = sequelize.define(
       allowNull: false,
     },
   },
+
   {
     underscored: true,
     tableName: "orders",

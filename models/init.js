@@ -3,6 +3,7 @@ const Sequelize = require("../DB");
 const Products = require("./products");
 const Orders = require("./orders");
 
+// связь многие ко многим - 3я таблица "products_orders" в БД создается автоматически 
 Products.belongsToMany(Orders, { through: "products_orders" });
 
 const init = async () => {
