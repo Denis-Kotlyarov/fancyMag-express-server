@@ -1,14 +1,16 @@
 var express = require("express");
 var router = express.Router();
+//подключение валидатора
+const validator = require ("../middleware/validator")
 
 const userController = new (require("../controllers/UserController"))();
 
 router.get("/", userController.getAll);
 router.get("/:id", userController.getOne);
 router.post("/me", userController.getMe);
-router.post("/register", userController.createUser);
-router.post("/login", userController.loginUser);
-router.put("/:id", userController.updateUser);
+router.post("/register", validator.register, userController.createUser);
+router.post("/login", validator.login, userController.loginUser);
+router.put("/:id",validator.register, userController.updateUser);
 router.delete("/:id", userController.deleteUser);
 
 module.exports = router;

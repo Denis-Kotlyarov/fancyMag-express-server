@@ -1,0 +1,70 @@
+PRODUCTS
+    GET
+        http://localhost:3000/products/1
+    POST
+        http://localhost:3000/products
+            {
+            "name":"name",
+            "description":"description",
+            "price": 10.0,
+            "popularity":10,
+            "seller":"seller",
+            "type":"type",
+            "is_fav":1,
+            "img_url":"img_url"
+            }
+    PATCH
+        http://localhost:3000/index/products/3
+            {
+            "name":"oleg",
+            "description":"description",
+            "price": 10.0,
+            "popularity":10,
+            "seller":"seller",
+            "type":"type",
+            "is_fav":1,
+            "img_url":"img_url"
+            }
+    DELETE
+        http://localhost:3000/index/products/3
+
+ORDERS
+    GET
+        http://localhost:3000/orders/1
+    POST
+            {
+            "status":"Ожидает оплаты",
+            "sum":200
+            }
+    PATCH
+        http://localhost:3000/orders/1
+            {
+            "status":"Сборка",
+            "sum":100
+            }
+    DELETE
+        http://localhost:3000/orders/1
+
+USERS
+    POST
+        http://localhost:3000/users/register
+            {
+            "first_name": "jktu5",
+            "last_name": "hdjfs5h",
+            "email": "66678@mail.com",
+            "password": "1234567"
+            }
+    POST
+        http://localhost:3000/users/login
+            {
+            "email": "6667@mail.com",
+            "password": "1234567"
+            }
+    PUT
+        http://localhost:3000/users/1
+            {
+            "first_name": "rrrrrtt",
+            "last_name": "rrrrtt",
+            "email": "1234567@mail.com",
+            "password": "1234567"
+            }
