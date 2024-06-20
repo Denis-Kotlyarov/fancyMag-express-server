@@ -2,14 +2,15 @@ var express = require("express");
 var router = express.Router();
 
 const userController = new (require("../controllers/UserController"))();
+const auth = require("../middleware/auth");
 
 router.get("/", userController.getAll);
 router.get("/:id", userController.getOne);
-router.post("/me", userController.getMe);
+router.post("/me", auth, userController.getMe);
 router.post("/register", userController.createUser);
 router.post("/login", userController.loginUser);
-router.put("/:id", userController.updateUser);
-router.delete("/:id", userController.deleteUser);
+router.put("/:id", auth, userController.updateUser);
+router.delete("/:id", auth, userController.deleteUser);
 
 module.exports = router;
 
@@ -158,7 +159,7 @@ module.exports = router;
  *                                          type: string
  *                                      refresh_token:
  *                                          type: string
- *                                      
+ *
  *          400:
  *              description: Неправильный запрос
  */
@@ -209,7 +210,7 @@ module.exports = router;
  *                                          type: string
  *                                      refresh_token:
  *                                          type: string
- *                                      
+ *
  *          400:
  *              description: Неправильный запрос
  */
