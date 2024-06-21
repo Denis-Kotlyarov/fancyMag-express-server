@@ -15,7 +15,7 @@ User.hasMany(Orders);
 
 const init = async () => {
   //Синхронизация
-  // await Sequelize.sync({ alter: true });
+  await Sequelize.sync({ alter: true });
   await User.sync({
     //Parameters - 1 принудительно обновить, 2 перезаписать таблицу
     alter: false, //true
