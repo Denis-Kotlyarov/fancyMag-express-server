@@ -53,7 +53,8 @@ class UsersController {
 
   getMe = async (req, res) => {
     try {
-      const item = await this.userService.getMe(req.body);
+      // console.log(req.user);
+      const item = await this.userService.getMe(req.user.data.id); //!!!!
       const data = { status: 200, data: item };
       return res.send(data);
     } catch (error) {
@@ -65,7 +66,11 @@ class UsersController {
   updateUser = async (req, res) => {
     try {
       const id = req.params.id;
-      const item = await this.userService.update(id, req.body);
+      const item = await this.userService.update(
+        id,
+        req.body,
+        req.user.data.id
+      );
       const data = { status: 201, data: item };
       return res.send(data);
     } catch (error) {
@@ -77,7 +82,7 @@ class UsersController {
   deleteUser = async (req, res) => {
     try {
       const id = req.params.id;
-      const item = await this.userService.delete(id);
+      const item = await this.userService.delete(id, req.user.data.id);
       const data = { status: 204, data: item };
       return res.send(data);
     } catch (error) {

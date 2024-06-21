@@ -4,14 +4,17 @@ var router = express.Router();
 const validator = require ("../middleware/validator")
 
 const userController = new (require("../controllers/UserController"))();
+const auth = require("../middleware/auth");
 
 router.get("/", userController.getAll);
 router.get("/:id", userController.getOne);
-router.post("/me", userController.getMe);
+router.post("/me", auth, userController.getMe);
 router.post("/register", validator.register, userController.createUser);
 router.post("/login", validator.login, userController.loginUser);
-router.put("/:id",validator.register, userController.updateUser);
-router.delete("/:id", userController.deleteUser);
+router.put("/:id", auth, validator.register, userController.updateUser);
+router.delete("/:id", auth, userController.deleteUser);
+
+
 
 module.exports = router;
 
@@ -160,7 +163,7 @@ module.exports = router;
  *                                          type: string
  *                                      refresh_token:
  *                                          type: string
- *                                      
+ *
  *          400:
  *              description: Неправильный запрос
  */
@@ -211,7 +214,7 @@ module.exports = router;
  *                                          type: string
  *                                      refresh_token:
  *                                          type: string
- *                                      
+ *
  *          400:
  *              description: Неправильный запрос
  */
@@ -316,9 +319,19 @@ module.exports = router;
  *              format: int64
  *              minimum: 1
  *          description: Уникальный идентификатор пользователя.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          id:
+ *                              type: number
+ *                              description: ID пользователя из токена, передается после auth обработчика. Не уверен нужно оно тут указывать? Это даже не req.BODY, параметр что автоматом передается. Но оставлю
  *      tags: [Users]
  *      responses:
- *          201:
+ *          204:
  *              description: Пользователь удален
  *              content:
  *                  application/json:

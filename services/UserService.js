@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET, JWT_REFRESH } = process.env;
 function createTokens(payload) {
   const access_token = jwt.sign({ data: payload }, JWT_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "24h",
   });
   const refresh_token = jwt.sign({ data: payload }, JWT_REFRESH, {
     expiresIn: "30d",
@@ -90,9 +90,10 @@ class UserService {
     }
   };
 
-  getMe = async (token) => {
+  getMe = async (token_payload) => {
     try {
-      const item = await User.scope("withOutPassword").findByPk(token.id);
+      // console.log(token_payload);
+      const item = await User.scope("withOutPassword").findByPk(token_payload);
       if (item) {
         return item;
       } else {
@@ -103,8 +104,11 @@ class UserService {
     }
   };
 
-  update = async (id, data) => {
+  update = async (id, data, token_id) => {
     try {
+      if (token_id != id) {
+        throw new Error("You'r not current user!");
+      }
       if (data.password) {
         const password = crypto
           .createHash("sha256")
@@ -123,8 +127,11 @@ class UserService {
     }
   };
 
-  delete = async (id) => {
+  delete = async (id, token_id) => {
     try {
+      if (token_id != id) {
+        throw new Error("You'r not current user!");
+      }
       const item = await User.findByPk(id);
       if (item) {
         item.destroy();

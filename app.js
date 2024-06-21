@@ -22,17 +22,25 @@ const options = {
     servers: [
       {
         url: "http://localhost:3000/",
-        description: "Local server"
-      }
-    ]
+        description: "Local server",
+      },
+    ],
   },
-  apis: ["./routes/*.js", "./controllers/*.js", "./services/*.js", "./models/*.js"],
-}
+  apis: [
+    "./routes/*.js",
+    "./controllers/*.js",
+    "./services/*.js",
+    "./models/*.js",
+  ],
+};
 
 // Импорт роутов
 var usersRouter = require("./routes/users");
-const ordersRouter = require ("./routes/orders");
-const productsRouter = require ("./routes/products");
+const ordersRouter = require("./routes/orders");
+const productsRouter = require("./routes/products");
+
+// Импорт промежуточных обработчиков
+const auth = require("./middleware/auth");
 
 const app = express();
 const port = 3001;
@@ -50,8 +58,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Подключение роутов + дока
 app.use("/users", usersRouter);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc(options))) //!Дока
-app.use("/orders", ordersRouter);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc(options))); //!Дока
+app.use("/orders", auth, ordersRouter); //
 app.use("/products", productsRouter);
 
 // catch 404 and forward to error handler
