@@ -315,9 +315,19 @@ module.exports = router;
  *              format: int64
  *              minimum: 1
  *          description: Уникальный идентификатор пользователя.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          id:
+ *                              type: number
+ *                              description: ID пользователя из токена, передается после auth обработчика. Не уверен нужно оно тут указывать? Это даже не req.BODY, параметр что автоматом передается. Но оставлю
  *      tags: [Users]
  *      responses:
- *          201:
+ *          204:
  *              description: Пользователь удален
  *              content:
  *                  application/json:
