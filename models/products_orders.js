@@ -4,6 +4,11 @@ const { DataTypes } = require("sequelize");
 const ProductsOrders = sequelize.define(
   "products_orders",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     product_id: {
       type: DataTypes.INTEGER,
     },

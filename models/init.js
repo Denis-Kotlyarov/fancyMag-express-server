@@ -8,14 +8,17 @@ const Favorite = require("./favorite");
 const Basket = require("./basket");
 
 // связь многие ко многим - 3я таблица "products_orders" в БД создается автоматически
-Products.belongsToMany(Orders, { through: "products_orders" });
-Products.belongsToMany(User, { through: "favorite" });
-Products.belongsToMany(User, { through: "basket" });
+Products.belongsToMany(Orders, { through: ProductsOrders });
+// Orders.belongsToMany(Products, { through: ProductsOrders });
+Products.belongsToMany(User, { through: Favorite });
+Products.belongsToMany(User, { through: Basket });
+// User.belongsToMany(Products, { through: Favorite });
+// User.belongsToMany(Products, { through: Basket });
 User.hasMany(Orders);
 
 const init = async () => {
   //Синхронизация
-  await Sequelize.sync({ alter: true });
+  // await Sequelize.sync({ alter: true });
   await User.sync({
     //Parameters - 1 принудительно обновить, 2 перезаписать таблицу
     alter: false, //true
@@ -32,15 +35,15 @@ const init = async () => {
 
   //Перексрестные таблицы !
   await ProductsOrders.sync({
-    alter: false,
+    alter: true,
     force: false,
   });
   await Favorite.sync({
-    alter: false,
+    alter: true,
     force: false,
   });
   await Basket.sync({
-    alter: false,
+    alter: true,
     force: false,
   });
 };
@@ -54,4 +57,5 @@ module.exports = {
   Favorite,
   Basket,
 };
+
 const Sequelize = require("../DB");

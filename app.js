@@ -38,6 +38,7 @@ const options = {
 var usersRouter = require("./routes/users");
 const ordersRouter = require("./routes/orders");
 const productsRouter = require("./routes/products");
+const storeRouter = require("./routes/store");
 
 // Импорт промежуточных обработчиков
 const auth = require("./middleware/auth");
@@ -61,6 +62,7 @@ app.use("/users", usersRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc(options))); //!Дока
 app.use("/orders", auth, ordersRouter); //
 app.use("/products", productsRouter);
+app.use("/store", auth, storeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

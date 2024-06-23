@@ -14,8 +14,6 @@ router.post("/login", validator.login, userController.loginUser);
 router.put("/:id", auth, validator.register, userController.updateUser);
 router.delete("/:id", auth, userController.deleteUser);
 
-
-
 module.exports = router;
 
 //!Схема
