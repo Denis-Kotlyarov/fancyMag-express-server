@@ -171,7 +171,7 @@ module.exports = router;
  *  description: Базавое API для функционала магазина
  * /store/refusal:
  *  post:
- *      summary: Создание заказа
+ *      summary: Отказ от заказа
  *      requestBody:
  *          required: true
  *          content:
